@@ -1,0 +1,412 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* CUPOM design tokens — receipt-inspired light & dark themes          */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #f1ede3;
+  --paper: #fbf9f2;
+  --paper-2: #f5f1e6;
+  --ink: #1b1d19;
+  --ink-soft: #6b6f63;
+  --ink-faint: #9aa08f;
+  --line: #e2dcc9;
+  --line-strong: #c9c2ab;
+  --green: #1e7a4f;
+  --green-soft: #e2efe4;
+  --red: #cc3d24;
+  --red-soft: #f7e4dd;
+  --amber: #a96f08;
+  --amber-soft: #f6ead0;
+  --ink-card: #22251f;
+  --ink-card-text: #f3efe4;
+  --shadow: 0 1px 2px rgba(27, 29, 25, 0.05), 0 10px 30px -18px rgba(27, 29, 25, 0.35);
+}
+.dark {
+  --bg: #121310;
+  --paper: #1b1d18;
+  --paper-2: #22241e;
+  --ink: #ece9dc;
+  --ink-soft: #a3a795;
+  --ink-faint: #6f7365;
+  --line: #2b2e26;
+  --line-strong: #3d4136;
+  --green: #4cb782;
+  --green-soft: #1d3227;
+  --red: #ef7a5f;
+  --red-soft: #3a241d;
+  --amber: #d9a13c;
+  --amber-soft: #37301c;
+  --ink-card: #ece9dc;
+  --ink-card-text: #191b16;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 14px 34px -18px rgba(0, 0, 0, 0.7);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Spline Sans", ui-sans-serif, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+.font-display {
+  font-family: "Archivo Black", "Spline Sans", sans-serif;
+  letter-spacing: 0.01em;
+}
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ambient backdrop around the app frame (desktop) */
+.ambient {
+  background:
+    radial-gradient(1100px 600px at 12% -8%, rgba(30, 122, 79, 0.16), transparent 60%),
+    radial-gradient(900px 700px at 95% 110%, rgba(204, 61, 36, 0.12), transparent 55%),
+    radial-gradient(rgba(243, 239, 228, 0.055) 1px, transparent 1.4px),
+    #0e0f0c;
+  background-size: auto, auto, 22px 22px, auto;
+}
+.ambient-watermark {
+  font-family: "Archivo Black", sans-serif;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(243, 239, 228, 0.06);
+  user-select: none;
+}
+
+/* Paper texture on the app canvas */
+.paper-bg {
+  background:
+    radial-gradient(rgba(27, 29, 25, 0.035) 1px, transparent 1.3px),
+    var(--bg);
+  background-size: 18px 18px, auto;
+}
+.dark .paper-bg {
+  background:
+    radial-gradient(rgba(236, 233, 220, 0.03) 1px, transparent 1.3px),
+    var(--bg);
+  background-size: 18px 18px, auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* Receipt primitives                                                  */
+/* ------------------------------------------------------------------ */
+.paper-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.receipt-edge {
+  position: relative;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+.receipt-edge::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 10px;
+  background:
+    linear-gradient(-45deg, transparent 7px, var(--paper) 0) 0 0 / 14px 14px repeat-x,
+    linear-gradient(45deg, transparent 7px, var(--paper) 0) 7px 0 / 14px 14px repeat-x;
+  filter: drop-shadow(0 2px 1px rgba(27, 29, 25, 0.08));
+}
+
+/* Dotted leader row: LABEL ......... VALUE */
+.leader {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+.leader > .dots {
+  flex: 1;
+  border-bottom: 2px dotted var(--line-strong);
+  transform: translateY(-4px);
+  min-width: 24px;
+}
+.leader > .lbl {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.leader > .val {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rule-dashed {
+  border-top: 2px dashed var(--line-strong);
+}
+.rule-dotted {
+  border-top: 2px dotted var(--line-strong);
+}
+
+/* Ticket notch card (used on insights / radar) */
+.notch {
+  -webkit-mask: radial-gradient(circle 9px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle 9px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+}
+
+/* ------------------------------------------------------------------ */
+/* Controls                                                            */
+/* ------------------------------------------------------------------ */
+.field {
+  width: 100%;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.field:focus {
+  border-color: var(--ink-soft);
+  box-shadow: 0 0 0 3px rgba(27, 29, 25, 0.08);
+}
+.dark .field:focus {
+  box-shadow: 0 0 0 3px rgba(236, 233, 220, 0.1);
+}
+.field::placeholder {
+  color: var(--ink-faint);
+}
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2380857a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+input[type="date"].field::-webkit-calendar-picker-indicator {
+  opacity: 0.55;
+  cursor: pointer;
+}
+.dark input[type="date"].field::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 16px;
+  transition: transform 0.12s ease, opacity 0.15s, background 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  user-select: none;
+}
+.btn:active {
+  transform: scale(0.965);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn-ink {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 8px 20px -10px rgba(27, 29, 25, 0.55);
+}
+.btn-ink:hover {
+  opacity: 0.92;
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+}
+.btn-ghost:hover {
+  background: var(--paper-2);
+}
+.btn-green {
+  background: var(--green);
+  color: #fff;
+}
+.btn-red {
+  background: var(--red);
+  color: #fff;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.chip:hover {
+  border-color: var(--ink-soft);
+  color: var(--ink);
+}
+.chip.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.pressable {
+  transition: transform 0.12s ease, background 0.15s;
+  cursor: pointer;
+}
+.pressable:active {
+  transform: scale(0.975);
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion                                                              */
+/* ------------------------------------------------------------------ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sheetup {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes scanline {
+  0% {
+    top: 6%;
+  }
+  50% {
+    top: 90%;
+  }
+  100% {
+    top: 6%;
+  }
+}
+@keyframes ping-soft {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  80%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes tick-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.anim-rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.anim-fade {
+  animation: fadein 0.25s ease both;
+}
+.anim-sheet {
+  animation: sheetup 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.anim-tick {
+  animation: tick-in 0.3s ease both;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scan-beam {
+  animation: scanline 2.6s ease-in-out infinite;
+}
+.pulse-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: currentColor;
+  animation: ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.blink {
+  animation: blink 1.1s ease infinite;
+}
+
+/* Scrollbars */
+.scroll-thin::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+.app-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.app-scroll::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 99px;
+}
+.app-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
